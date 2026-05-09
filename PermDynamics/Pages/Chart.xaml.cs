@@ -23,6 +23,7 @@ namespace PermDynamics.Pages
         public double actualHeightCanvas = 0;
         public double maxValue = 0;
         double averageValue = 0;
+        Line averageLine = new Line();
 
         public DispatcherTimer dispatcherTimer = new DispatcherTimer();
         public Chart(MainWindow mainWindow)
@@ -105,9 +106,26 @@ namespace PermDynamics.Pages
         {
             double value = mainWindow.pointsInfo[mainWindow.pointsInfo.Count - 1].value;
 
+            // Нужно обнулять среднее значение, иначе y координата накапливается и улетает в облака
+            averageValue = 0;
+
             for (int i = 0; i < mainWindow.pointsInfo.Count; i++)
                 averageValue += mainWindow.pointsInfo[i].value;
             averageValue = averageValue / mainWindow.pointsInfo.Count;
+
+            double averageY = actualHeightCanvas - ((averageValue / maxValue) * actualHeightCanvas);
+
+            averageLine.X1 = 0;
+            averageLine.X2 = mainWindow.pointsInfo.Count * 20 + 300;
+            averageLine.Y1 = averageY;
+            averageLine.Y2 = averageY;
+
+            averageLine.Stroke = Brushes.Pink;
+            averageLine.StrokeThickness = 2;
+            averageLine.StrokeDashArray = new DoubleCollection() { 5, 5 };
+
+            if (!canvas.Children.Contains(averageLine))
+                canvas.Children.Add(averageLine);
 
             for (int i = 0; i < mainWindow.pointsInfo.Count; i++)
             {
@@ -118,6 +136,7 @@ namespace PermDynamics.Pages
             }
 
             canvas.Width = mainWindow.pointsInfo.Count * 20 + 300;
+            averageLine.X2 = canvas.Width;
             scroll.ScrollToHorizontalOffset(canvas.Width);
 
             current_value.Content = "Тек. знач: " + Math.Round(value, 2);
