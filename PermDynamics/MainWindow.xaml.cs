@@ -15,11 +15,9 @@ using System.Windows.Shapes;
 
 namespace PermDynamics
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        public List<Classes.PointInfo> pointInfo = new List<Classes.PointInfo>();
         public MainWindow()
         {
             InitializeComponent();
