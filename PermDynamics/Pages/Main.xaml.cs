@@ -17,9 +17,11 @@ namespace PermDynamics.Pages
 {
     public partial class Main : Page
     {
-        public Main()
+        public MainWindow mainWindow;
+        public Main(MainWindow mainWindow)
         {
             InitializeComponent();
+            this.mainWindow = mainWindow;
         }
 
         private void OpenPageChart(object sender, RoutedEventArgs e)
